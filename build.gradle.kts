@@ -2,10 +2,15 @@ import java.net.URI
 
 plugins {
     kotlin("jvm") version "1.9.21"
+    id("maven-publish")
 }
 
-group = "com.horux"
-version = "1.0-SNAPSHOT"
+apply {
+    plugin("maven-publish")
+}
+
+group = "com.github.abdullahkhan118"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -23,5 +28,22 @@ tasks.test {
     useJUnitPlatform()
 }
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(17)
+}
+
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components["java"])
+                groupId = "com.github.abdullahkhan118"
+                artifactId = "kotlin.extensions"
+                version = "1.0.0"
+            }
+        }
+        repositories {
+            mavenLocal()
+        }
+    }
 }
